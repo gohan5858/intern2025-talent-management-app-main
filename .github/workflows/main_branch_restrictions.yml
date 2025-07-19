@@ -9,9 +9,9 @@ jobs:
   check_base_branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if not from develop branch
+      - name: Fail if not from develop branch or hotfix branch
         run: |
-          if [[ "${{ github.event.pull_request.head.ref }}" != "develop" ]]; then
-            echo "Error: mainブランチへのPRはdevelopブランチからのみ可能です。"
+          if [[ "${{ github.event.pull_request.head.ref }}" != "develop" && "${{ github.event.pull_request.head.ref }}" != "hotfix*" ]]; then
+            echo "Error: mainブランチへのPRはdevelopブランチまたはhotfixブランチからのみ可能です。"
             exit 1
           fi
