@@ -37,7 +37,7 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
         }
     }
 
-    async getEmployees(filterText: string): Promise<Employee[]> {
+    async getEmployees(filterText: string, affiliation: string, position: string): Promise<Employee[]> {
         const input: ScanCommandInput  = {
             TableName: this.tableName,
         };
@@ -48,6 +48,8 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
         }
         return items
             .filter(item => filterText === "" || item["name"].S === filterText)
+            .filter(item => affiliation === "" || item["affiliation"].S === affiliation)
+            .filter(item => position === "" || item["position"].S === position)
             .map(item => {
                 return {
                     id: item["id"].S,
