@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { EmployeeDatabaseInMemory } from './employee/EmployeeDatabaseInMemory';
+import {isValidQueryString} from "./utils/utils";
 
 const app = express();
 const port = process.env.PORT ?? 8080;
@@ -7,20 +8,16 @@ const database = new EmployeeDatabaseInMemory();
 
 app.get("/api/employees", async (req: Request, res: Response) => {
     const filterText = req.query.filterText ?? "";
-    // req.query is parsed by the qs module.
-    // https://www.npmjs.com/package/qs
-    if (Array.isArray(filterText)) {
-        // Multiple filterText is not supported
+    const affiliation = req.query.affiliation ?? "";
+    const position = req.query.position ?? "";
+
+    if (!isValidQueryString(filterText) || !isValidQueryString(affiliation) || !isValidQueryString(position)) {
         res.status(400).send();
         return;
     }
-    if (typeof filterText !== "string") {
-        // Nested query object is not supported
-        res.status(400).send();
-        return;
-    }
+
     try {
-        const employees = await database.getEmployees(filterText);
+        const employees = await database.getEmployees(filterText, affiliation, position);
         res.status(200).send(JSON.stringify(employees));
     } catch (e) {
         console.error(`Failed to load the users filtered by ${filterText}.`, e);

@@ -15,11 +15,21 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
         return this.employees.get(id);
     }
 
-    async getEmployees(filterText: string): Promise<Employee[]> {
-        const employees = Array.from(this.employees.values());
-        if (filterText === "") {
-            return employees;
+    async getEmployees(filterText: string, affiliation: string, position: string): Promise<Employee[]> {
+        let employees = Array.from(this.employees.values());
+
+        if (filterText !== "") {
+            employees = employees.filter(employee => employee.name.includes(filterText));
         }
-        return employees.filter(employee => employee.name.includes(filterText));
+
+        if (affiliation !== "") {
+            employees = employees.filter(employee => employee.affiliation === affiliation);
+        }
+
+        if (position !== "") {
+            employees = employees.filter(employee => employee.position === position);
+        }
+
+        return employees;
     }
 }
