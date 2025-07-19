@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 export default function EmployeePage() {
   return (
-    <GlobalContainer>
+    <GlobalContainer pageName={"社員検索"}>
       { /* Mark EmployeeDetailsContainer as CSR */ }
       <Suspense>
         <EmployeeDetailsContainer />
