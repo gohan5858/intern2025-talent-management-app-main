@@ -3,7 +3,7 @@ import { GlobalContainer } from "@/components/GlobalContainer";
 
 export default function Home() {
   return (
-    <GlobalContainer>
+    <GlobalContainer pageName={"社員詳細"}>
       <SearchEmployees />
     </GlobalContainer>
   );
