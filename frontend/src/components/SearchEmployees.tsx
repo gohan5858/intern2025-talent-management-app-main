@@ -1,4 +1,6 @@
 "use client";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import {
   FormControl,
   Grid,
@@ -6,8 +8,9 @@ import {
   MenuItem,
   Paper,
   Select,
-  SelectChangeEvent,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { useState } from "react";
 import { EmployeeListContainer, SortMethod } from "./EmployeeListContainer";
@@ -20,6 +23,15 @@ export function SearchEmployees() {
 
   const handleSortMethodSelected = (event: SelectChangeEvent) => {
     setSortMethod(event.target.value as SortMethod);
+  };
+
+  const [viewMode, setViewMode] = useState<"list" | "card">("list");
+
+  const handleChangeViewMode = (
+    _: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
+    setViewMode(value as "list" | "card");
   };
 
   return (
@@ -77,12 +89,27 @@ export function SearchEmployees() {
             </div>
           </Grid>
         </Grid>
+
+        <ToggleButtonGroup
+          exclusive
+          value={viewMode}
+          onChange={handleChangeViewMode}
+        >
+          <ToggleButton value="list" aria-label="list">
+            <FormatListBulletedIcon />
+          </ToggleButton>
+          <ToggleButton value="card" aria-label="card">
+            <ViewModuleIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+
         <EmployeeListContainer
           key="employeesContainer"
           filterText={searchKeyword}
           affiliationFilter={affiliationFilter}
           positionFilter={positionFilter}
           sortMethod={sortMethod}
+          viewMode={viewMode}
         />
       </Paper>
     </>

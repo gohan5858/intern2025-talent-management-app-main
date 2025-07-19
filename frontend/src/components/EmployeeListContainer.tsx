@@ -5,6 +5,7 @@ import * as t from "io-ts";
 import { isLeft } from "fp-ts/Either";
 import { EmployeeListItem } from "./EmployeeListItem";
 import { Employee, EmployeeT } from "../models/Employee";
+import { Grid } from "@mui/material";
 
 export type SortMethod =
   | "default"
@@ -18,6 +19,7 @@ export type EmployeesContainerProps = {
   affiliationFilter: string;
   positionFilter: string;
   sortMethod: SortMethod;
+  viewMode: "list" | "card";
 };
 
 const EmployeesT = t.array(EmployeeT);
@@ -60,6 +62,7 @@ export function EmployeeListContainer({
   affiliationFilter,
   positionFilter,
   sortMethod,
+  viewMode,
 }: EmployeesContainerProps) {
   const encodedFilterText = encodeURIComponent(filterText);
   const { data, error, isLoading } = useSWR<Employee[], Error>(
@@ -71,12 +74,30 @@ export function EmployeeListContainer({
       console.error(`Failed to fetch employees filtered by filterText`, error);
     }
   }, [error, filterText]);
+
+  if (data != null && viewMode === "card") {
+    return (
+      <Grid container spacing={2}>
+        {data.map((employee) => (
+          <Grid key={employee.id} size={{ xs: 12, sm: 6, md: 4 }}>
+            <EmployeeListItem employee={employee} viewMode={viewMode} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+
   if (data != null) {
     const sortedData = sortEmployees(sortMethod, data);
     return sortedData.map((employee) => (
-      <EmployeeListItem employee={employee} key={employee.id} />
+      <EmployeeListItem
+        employee={employee}
+        key={employee.id}
+        viewMode={viewMode}
+      />
     ));
   }
+
   if (isLoading) {
     return <p>Loading employees...</p>;
   }
