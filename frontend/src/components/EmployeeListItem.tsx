@@ -2,7 +2,6 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
 import { Employee } from "../models/Employee";
-import { useEffect } from "react";
 import Link from "next/link";
 
 export type EmployeeListItemProps = {
