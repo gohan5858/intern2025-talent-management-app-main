@@ -1,9 +1,13 @@
 "use client";
 import { Paper, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EmployeeListContainer } from "./EmployeeListContainer";
 
 export function SearchEmployees() {
+  useEffect(() => {
+    document.title = "タレントマネジメントシステム - 社員検索";
+  }, []);
+
   const [searchKeyword, setSearchKeyword] = useState("");
   return (
     <Paper

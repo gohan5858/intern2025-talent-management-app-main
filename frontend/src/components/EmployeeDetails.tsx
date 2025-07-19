@@ -1,7 +1,7 @@
 import PersonIcon from "@mui/icons-material/Person";
 import { Avatar, Box, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Employee } from "../models/Employee";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 const tabPanelValue = {
   basicInfo: "基本情報",
@@ -33,6 +33,10 @@ export type EmployeeDetailsProps = {
 };
 
 export function EmployeeDetails(prop: EmployeeDetailsProps) {
+  useEffect(() => {
+    document.title = "タレントマネジメントシステム - 社員詳細";
+  }, []);
+
   const [selectedTabValue, setSelectedTabValue] =
     useState<TabPanelValue>("basicInfo");
   const employee = prop.employee;
