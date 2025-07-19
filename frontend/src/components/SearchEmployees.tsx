@@ -26,29 +26,29 @@ export function SearchEmployees() {
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
-      <Grid container spacing={2}>
-        <Grid size={{ sm: 12, md: 6 }}>
-          <TextField
-            fullWidth
-            placeholder="所属を入力してください"
-            value={affiliationFilter}
-            onChange={(e) => setAffiliationFilter(e.target.value)}
-          />
+        <Grid container spacing={2}>
+          <Grid size={{ sm: 12, md: 6 }}>
+            <TextField
+              fullWidth
+              placeholder="所属を入力してください"
+              value={affiliationFilter}
+              onChange={(e) => setAffiliationFilter(e.target.value)}
+            />
+          </Grid>
+          <Grid size={{ sm: 12, md: 6 }}>
+            <TextField
+              fullWidth
+              placeholder="役職を入力してください"
+              value={positionFilter}
+              onChange={(e) => setPositionFilter(e.target.value)}
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ sm: 12, md: 6 }}>
-          <TextField
-            fullWidth
-            placeholder="役職を入力してください"
-            value={positionFilter}
-            onChange={(e) => setPositionFilter(e.target.value)}
-          />
-        </Grid>
-      </Grid>
         <EmployeeListContainer
           key="employeesContainer"
           filterText={searchKeyword}
-        affiliationFilter={affiliationFilter}
-        positionFilter={positionFilter}
+          affiliationFilter={affiliationFilter}
+          positionFilter={positionFilter}
         />
       </Paper>
     </>
