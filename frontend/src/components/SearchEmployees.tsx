@@ -1,12 +1,29 @@
 "use client";
-import { Grid, Paper, TextField } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import { useState } from "react";
 import { EmployeeListContainer } from "./EmployeeListContainer";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 export function SearchEmployees() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [affiliationFilter, setAffiliationFilter] = useState("");
   const [positionFilter, setPositionFilter] = useState("");
+
+  const [viewMode, setViewMode] = useState<"list" | "card">("list");
+
+  const handleChangeViewMode = (
+    _: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
+    setViewMode(value as "list" | "card");
+  };
 
   return (
     <>
@@ -44,11 +61,26 @@ export function SearchEmployees() {
             />
           </Grid>
         </Grid>
+
+        <ToggleButtonGroup
+          exclusive
+          value={viewMode}
+          onChange={handleChangeViewMode}
+        >
+          <ToggleButton value="list" aria-label="list">
+            <FormatListBulletedIcon />
+          </ToggleButton>
+          <ToggleButton value="card" aria-label="card">
+            <ViewModuleIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+
         <EmployeeListContainer
           key="employeesContainer"
           filterText={searchKeyword}
           affiliationFilter={affiliationFilter}
           positionFilter={positionFilter}
+          viewMode={viewMode}
         />
       </Paper>
     </>
