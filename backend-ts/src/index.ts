@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { EmployeeDatabaseInMemory } from './employee/EmployeeDatabaseInMemory';
-import {isValidQueryString} from "./utils/utils";
+import {isValidQueryString} from "./utils/validator";
 
 const app = express();
 const port = process.env.PORT ?? 8080;
