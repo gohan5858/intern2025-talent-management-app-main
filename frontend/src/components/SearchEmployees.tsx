@@ -1,12 +1,26 @@
 "use client";
-import { Grid, Paper, TextField } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { useState } from "react";
-import { EmployeeListContainer } from "./EmployeeListContainer";
+import { EmployeeListContainer, SortMethod } from "./EmployeeListContainer";
 
 export function SearchEmployees() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [affiliationFilter, setAffiliationFilter] = useState("");
   const [positionFilter, setPositionFilter] = useState("");
+  const [sortMethod, setSortMethod] = useState<SortMethod>("default");
+
+  const handleSortMethodSelected = (event: SelectChangeEvent) => {
+    setSortMethod(event.target.value as SortMethod);
+  };
 
   return (
     <>
@@ -26,29 +40,49 @@ export function SearchEmployees() {
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
-      <Grid container spacing={2}>
-        <Grid size={{ sm: 12, md: 6 }}>
-          <TextField
-            fullWidth
-            placeholder="所属を入力してください"
-            value={affiliationFilter}
-            onChange={(e) => setAffiliationFilter(e.target.value)}
-          />
+        <Grid container spacing={2}>
+          <Grid size={{ sm: 12, md: 5 }}>
+            <TextField
+              fullWidth
+              placeholder="所属を入力してください"
+              value={affiliationFilter}
+              onChange={(e) => setAffiliationFilter(e.target.value)}
+            />
+          </Grid>
+          <Grid size={{ sm: 12, md: 5 }}>
+            <TextField
+              fullWidth
+              placeholder="役職を入力してください"
+              value={positionFilter}
+              onChange={(e) => setPositionFilter(e.target.value)}
+            />
+          </Grid>
+          <Grid size={{ sm: 12, md: 2 }}>
+            <div>
+              <FormControl fullWidth>
+                <InputLabel id="sort-label">並び替え</InputLabel>
+                <Select
+                  labelId="sort-label"
+                  value={sortMethod}
+                  label="並び替える"
+                  onChange={handleSortMethodSelected}
+                >
+                  <MenuItem value="default">指定しない</MenuItem>
+                  <MenuItem value="age-asc">年齢順（昇順）</MenuItem>
+                  <MenuItem value="age-dsc">年齢順（降順）</MenuItem>
+                  <MenuItem value="name-asc">名前順（昇順）</MenuItem>
+                  <MenuItem value="name-desc">名前順（降順）</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Grid>
         </Grid>
-        <Grid size={{ sm: 12, md: 6 }}>
-          <TextField
-            fullWidth
-            placeholder="役職を入力してください"
-            value={positionFilter}
-            onChange={(e) => setPositionFilter(e.target.value)}
-          />
-        </Grid>
-      </Grid>
         <EmployeeListContainer
           key="employeesContainer"
           filterText={searchKeyword}
-        affiliationFilter={affiliationFilter}
-        positionFilter={positionFilter}
+          affiliationFilter={affiliationFilter}
+          positionFilter={positionFilter}
+          sortMethod={sortMethod}
         />
       </Paper>
     </>

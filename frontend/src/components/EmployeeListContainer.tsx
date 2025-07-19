@@ -6,10 +6,18 @@ import { isLeft } from "fp-ts/Either";
 import { EmployeeListItem } from "./EmployeeListItem";
 import { Employee, EmployeeT } from "../models/Employee";
 
+export type SortMethod =
+  | "default"
+  | "age-asc"
+  | "age-dsc"
+  | "name-asc"
+  | "name-desc";
+
 export type EmployeesContainerProps = {
   filterText: string;
   affiliationFilter: string;
   positionFilter: string;
+  sortMethod: SortMethod;
 };
 
 const EmployeesT = t.array(EmployeeT);
@@ -27,7 +35,32 @@ const employeesFetcher = async (url: string): Promise<Employee[]> => {
   return decoded.right;
 };
 
-export function EmployeeListContainer({ filterText, affiliationFilter, positionFilter }: EmployeesContainerProps) {
+const sortEmployees = (
+  sortMethod: SortMethod,
+  data: Employee[]
+): Employee[] => {
+  switch (sortMethod) {
+    case "default":
+      return data;
+    case "age-asc":
+      return [...data].sort((a, b) => a.age - b.age);
+    case "age-dsc":
+      return [...data].sort((a, b) => b.age - a.age);
+    case "name-asc":
+      return [...data].sort((a, b) => a.name.localeCompare(b.name));
+    case "name-desc":
+      return [...data].sort((a, b) => b.name.localeCompare(a.name));
+    default:
+      return data;
+  }
+};
+
+export function EmployeeListContainer({
+  filterText,
+  affiliationFilter,
+  positionFilter,
+  sortMethod,
+}: EmployeesContainerProps) {
   const encodedFilterText = encodeURIComponent(filterText);
   const { data, error, isLoading } = useSWR<Employee[], Error>(
     `/api/employees?filterText=${encodedFilterText}&affiliation=${affiliationFilter}&position=${positionFilter}`,
@@ -39,7 +72,8 @@ export function EmployeeListContainer({ filterText, affiliationFilter, positionF
     }
   }, [error, filterText]);
   if (data != null) {
-    return data.map((employee) => (
+    const sortedData = sortEmployees(sortMethod, data);
+    return sortedData.map((employee) => (
       <EmployeeListItem employee={employee} key={employee.id} />
     ));
   }
