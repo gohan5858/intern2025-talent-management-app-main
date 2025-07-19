@@ -60,7 +60,11 @@ export function EmployeeListContainer({
 
   if (data != null) {
     return data.map((employee) => (
-      <EmployeeListItem employee={employee} key={employee.id} viewMode={viewMode} />
+      <EmployeeListItem
+        employee={employee}
+        key={employee.id}
+        viewMode={viewMode}
+      />
     ));
   }
 

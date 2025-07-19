@@ -1,9 +1,15 @@
 "use client";
-import { Grid, Paper, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import { useState } from "react";
 import { EmployeeListContainer } from "./EmployeeListContainer";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 export function SearchEmployees() {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -12,7 +18,10 @@ export function SearchEmployees() {
 
   const [viewMode, setViewMode] = useState<"list" | "card">("list");
 
-  const handleChangeViewMode = (_: React.MouseEvent<HTMLElement>, value: string) => {
+  const handleChangeViewMode = (
+    _: React.MouseEvent<HTMLElement>,
+    value: string
+  ) => {
     setViewMode(value as "list" | "card");
   };
 
