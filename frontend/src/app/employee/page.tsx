@@ -13,7 +13,7 @@ export default function EmployeePage() {
       </Suspense>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button sx={{ margin: 2 }} onClick={() => window.history.back()}>
-          戻る
+          検索画面に戻る
         </Button>
       </Box>
     </GlobalContainer>
