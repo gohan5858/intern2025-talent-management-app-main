@@ -9,20 +9,23 @@ export function SearchEmployees() {
   const [positionFilter, setPositionFilter] = useState("");
 
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        flex: 1,
-        p: 2,
-      }}
-    >
-      <TextField
-        placeholder="検索キーワードを入力してください"
-        value={searchKeyword}
-        onChange={(e) => setSearchKeyword(e.target.value)}
-      />
+    <>
+      <title>タレントマネジメントシステム - 社員検索</title>
+
+      <Paper
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          flex: 1,
+          p: 2,
+        }}
+      >
+        <TextField
+          placeholder="検索キーワードを入力してください"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
       <Grid container spacing={2}>
         <Grid size={{ sm: 12, md: 6 }}>
           <TextField
@@ -41,12 +44,13 @@ export function SearchEmployees() {
           />
         </Grid>
       </Grid>
-      <EmployeeListContainer
-        key="employeesContainer"
-        filterText={searchKeyword}
+        <EmployeeListContainer
+          key="employeesContainer"
+          filterText={searchKeyword}
         affiliationFilter={affiliationFilter}
         positionFilter={positionFilter}
-      />
-    </Paper>
+        />
+      </Paper>
+    </>
   );
 }
