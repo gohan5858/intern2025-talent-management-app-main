@@ -17,6 +17,7 @@ export const EmployeeRegisterT = t.type({
     age: t.number,
     affiliation: t.string,
     position: t.string,
+    skills: t.array(SkillT),
 });
 
 export type EmployeeRegister = t.TypeOf<typeof EmployeeRegisterT>;
