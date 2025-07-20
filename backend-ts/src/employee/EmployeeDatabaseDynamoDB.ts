@@ -10,6 +10,9 @@ import {
 import { isLeft } from "fp-ts/Either";
 import { Employee, EmployeeT } from "./Employee";
 import { EmployeeDatabase } from "./EmployeeDatabase";
+import { SortMethod } from "../types/SortMethod";
+import { EmployeeApiResponse } from "../types/EmployeeApiResponse";
+import { pageRow } from "../types/PageNo";
 
 export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
   private client: DynamoDBClient;
@@ -51,17 +54,23 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
   async getEmployees(
     filterText: string,
     affiliation: string,
-    position: string
-  ): Promise<Employee[]> {
+    position: string,
+    viewMode: string,
+    sortMethod: SortMethod,
+    pageNo: number
+  ): Promise<EmployeeApiResponse> {
     const input: ScanCommandInput = {
       TableName: this.tableName,
     };
     const output = await this.client.send(new ScanCommand(input));
     const items = output.Items;
     if (items == null) {
-      return [];
+      return {
+        employees: [],
+        totalPages: 0,
+      };
     }
-    return items
+    const employees = items
       .filter((item) => filterText === "" || item["name"].S === filterText)
       .filter(
         (item) => affiliation === "" || item["affiliation"].S === affiliation
@@ -86,6 +95,36 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
           return [decoded.right];
         }
       });
+
+    switch (sortMethod) {
+      case "age-asc":
+        employees.sort((a, b) => a.age - b.age);
+        break;
+      case "age-dsc":
+        employees.sort((a, b) => b.age - a.age);
+        break;
+      case "name-asc":
+        employees.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-desc":
+        employees.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    const sortedDataLength = employees.length;
+    const row = pageRow(viewMode);
+    const startIndex = (pageNo - 1) * row;
+    const endIndex =
+      startIndex + row > sortedDataLength ? sortedDataLength : startIndex + row;
+    const paginatedEmployees = employees.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(employees.length / row);
+    return {
+      employees: paginatedEmployees,
+      totalPages: totalPages,
+    };
   }
 
   private async getMaxId(): Promise<number> {

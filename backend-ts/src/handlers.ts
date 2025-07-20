@@ -8,6 +8,8 @@ import { EmployeeDatabaseDynamoDB } from "./employee/EmployeeDatabaseDynamoDB";
 import { EmployeeDatabase } from "./employee/EmployeeDatabase";
 import { EmployeeRegisterT } from "./employee/Employee";
 import { isLeft } from "fp-ts/Either";
+import { EmployeeApiResponse } from "./types/EmployeeApiResponse";
+import { SortMethod } from "./types/SortMethod";
 
 const getEmployeeHandler = async (
   database: EmployeeDatabase,
@@ -28,12 +30,18 @@ const getEmployeesHandler = async (
   database: EmployeeDatabase,
   filterText: string,
   affiliation: string,
-  position: string
+  position: string,
+  viewMode: string,
+  sortMethod: SortMethod,
+  pageNo: number
 ): Promise<LambdaFunctionURLResult> => {
-  const employees: Employee[] = await database.getEmployees(
+  const employees: EmployeeApiResponse = await database.getEmployees(
     filterText,
     affiliation,
-    position
+    position,
+    viewMode,
+    sortMethod,
+    pageNo,
   );
   return {
     statusCode: 200,
@@ -90,7 +98,10 @@ export const handle = async (
         database,
         query?.filterText ?? "",
         query?.affiliation ?? "",
-        query?.position ?? ""
+        query?.position ?? "",
+        query?.viewMode ?? "",
+        "default",
+        0
       );
     } else if (path === "/api/employees/register") {
       const body = JSON.parse(event.body ?? "{}");
