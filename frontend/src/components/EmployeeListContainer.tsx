@@ -5,8 +5,9 @@ import * as t from "io-ts";
 import { isLeft } from "fp-ts/Either";
 import { EmployeeListItem } from "./EmployeeListItem";
 import { EmployeeT } from "../models/Employee";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { EmployeeApiResponse } from "@/types/EmployeeApiResponse";
+import { FavoriteButton } from "./FavoriteButton";
 
 export type SortMethod =
   | "default"
@@ -77,6 +78,7 @@ export function EmployeeListContainer({
         {employees.map((employee) => (
           <Grid key={employee.id} size={{ xs: 12, sm: 6, md: 4 }}>
             <EmployeeListItem employee={employee} viewMode={viewMode} />
+            <FavoriteButton />
           </Grid>
         ))}
       </Grid>
@@ -85,11 +87,12 @@ export function EmployeeListContainer({
 
   if (data != null) {
     return employees.map((employee) => (
-      <EmployeeListItem
-        employee={employee}
-        key={employee.id}
-        viewMode={viewMode}
-      />
+      <Box key={employee.id} display="flex" alignItems="center">
+        <Box flex={1}>
+          <EmployeeListItem employee={employee} viewMode={viewMode} />
+        </Box>
+        <FavoriteButton />
+      </Box>
     ));
   }
 

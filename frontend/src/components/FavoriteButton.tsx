@@ -1,33 +1,24 @@
 import { IconButton, Tooltip } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useFavoriteEmployees } from "./useFavoriteEmployees";
+import { useState } from "react";
 
-type FavoriteButtonProps = {
-  employeeId: string;
-};
-
-export function FavoriteButton({ employeeId }: FavoriteButtonProps) {
-  const { favorite, addFavorite, removeFavorite, isFavorite } =
-    useFavoriteEmployees();
+export function FavoriteButton() {
+  const [favorites, setFavorites] = useState(false);
 
   const toggleFavorite = (e: React.MouseEvent) => {
-    if (isFavorite(employeeId)) {
-      removeFavorite(employeeId);
-    } else {
-      addFavorite(employeeId);
-    }
+    setFavorites(!favorites);
     e.stopPropagation(); // 親のクリックなどを防ぐ
   };
 
   return (
-    <Tooltip title={favorite ? "スター解除" : "スター登録"}>
+    <Tooltip title={favorites ? "スター解除" : "スター登録"}>
       <IconButton
         onClick={toggleFavorite}
         aria-label="favorite"
-        color={favorite ? "warning" : "default"}
+        color={favorites ? "warning" : "default"}
       >
-        {favorite ? <StarIcon /> : <StarBorderIcon />}
+        {favorites ? <StarIcon /> : <StarBorderIcon />}
       </IconButton>
     </Tooltip>
   );

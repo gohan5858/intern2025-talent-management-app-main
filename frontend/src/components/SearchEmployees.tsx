@@ -42,7 +42,7 @@ export function SearchEmployees() {
 
   return (
     <>
-      <title>タレントマネジメントシステム - 社員検索</title>
+      <title>インタレスト - 社員検索</title>
 
       <Paper
         sx={{

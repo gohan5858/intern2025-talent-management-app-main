@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { Employee } from "../models/Employee";
-import { FavoriteButton } from "./FavoriteButton";
 
 export type EmployeeListItemProps = {
   employee: Employee;
@@ -62,12 +61,6 @@ export function EmployeeListItem({
                 <Chip label={employee.position} variant="outlined" />
                 <Chip label={`${employee.age}歳`} variant="outlined" />
               </Box>
-            </Box>
-            <Box
-              mt={viewMode === "card" ? 2 : 0}
-              alignSelf={viewMode === "card" ? "center" : "right"}
-            >
-              <FavoriteButton employeeId={"ss"} />
             </Box>
           </Box>
         </CardContent>
