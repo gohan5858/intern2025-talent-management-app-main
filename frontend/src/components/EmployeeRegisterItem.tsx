@@ -24,6 +24,7 @@ export function EmployeeRegisterItem({ onSubmit }: EmployeeRegisterProps) {
       age: ageValue,
       affiliation: affiliationValue,
       position: positionValue,
+      skills: [],
     };
 
     onSubmit({

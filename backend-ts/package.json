@@ -6,6 +6,8 @@
     "build": "tsc",
     "start": "npm run build && node out/index.js",
     "dev": "tsx watch src/index.ts",
+    "format": "prettier --write 'src/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.ts'",
     "test": "jest"
   },
   "author": "YourName <you@example.com>",
