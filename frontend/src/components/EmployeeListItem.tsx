@@ -43,7 +43,7 @@ export function EmployeeListItem({
             <Avatar sx={{ width: 48, height: 48 }}>
               <PersonIcon sx={{ fontSize: 48 }} />
             </Avatar>
-            <Box display="flex" flexDirection="row" gap={1}>
+            <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
               <Chip label={employee.affiliation} variant="outlined" />
               <Chip label={employee.position} variant="outlined" />
               <Chip label={employee.name} variant="outlined" />
