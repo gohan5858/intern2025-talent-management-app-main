@@ -1,8 +1,15 @@
 import PersonIcon from "@mui/icons-material/Person";
 
-import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
-import { Employee } from "../models/Employee";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
+import { Employee } from "../models/Employee";
 
 export type EmployeeListItemProps = {
   employee: Employee;
@@ -36,8 +43,11 @@ export function EmployeeListItem({
             <Avatar sx={{ width: 48, height: 48 }}>
               <PersonIcon sx={{ fontSize: 48 }} />
             </Avatar>
-            <Box display="flex" flexDirection="column">
-              <Typography>{employee.name}</Typography>
+            <Box display="flex" flexDirection="row" gap={1}>
+              <Chip label={employee.affiliation} variant="outlined" />
+              <Chip label={employee.position} variant="outlined" />
+              <Chip label={employee.name} variant="outlined" />
+              <Chip label={`${employee.age}歳`} variant="outlined" />
             </Box>
           </Box>
         </CardContent>
