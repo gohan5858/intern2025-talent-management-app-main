@@ -42,7 +42,7 @@ export function SearchEmployees() {
 
   return (
     <>
-      <title>タレントマネジメントシステム - 社員検索</title>
+      <title>インタレスト - 社員検索</title>
 
       <Paper
         sx={{
@@ -53,9 +53,6 @@ export function SearchEmployees() {
           p: 2,
         }}
       >
-        <Button href="/employee/register" style={{ textDecoration: "none" }}>
-          新規作成
-        </Button>
         <TextField
           placeholder="検索キーワードを入力してください"
           value={searchKeyword}
@@ -99,18 +96,34 @@ export function SearchEmployees() {
           </Grid>
         </Grid>
 
-        <ToggleButtonGroup
-          exclusive
-          value={viewMode}
-          onChange={handleChangeViewMode}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gap={2}
         >
-          <ToggleButton value="list" aria-label="list">
-            <FormatListBulletedIcon />
-          </ToggleButton>
-          <ToggleButton value="card" aria-label="card">
-            <ViewModuleIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
+          <ToggleButtonGroup
+            exclusive
+            value={viewMode}
+            onChange={handleChangeViewMode}
+          >
+            <ToggleButton value="list" aria-label="list">
+              <FormatListBulletedIcon />
+            </ToggleButton>
+            <ToggleButton value="card" aria-label="card">
+              <ViewModuleIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+          <Button
+            href="/employee/register"
+            variant="contained"
+            sx={{ textDecoration: "none", whiteSpace: "nowrap" }}
+          >
+            新規作成
+          </Button>
+        </Box>
 
         <Box sx={{ minHeight: "420px" }}>
           <EmployeeListContainer

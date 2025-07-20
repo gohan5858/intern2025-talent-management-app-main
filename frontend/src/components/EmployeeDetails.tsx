@@ -67,7 +67,7 @@ export function EmployeeDetails(prop: EmployeeDetailsProps) {
 
   return (
     <>
-      <title>タレントマネジメントシステム - 社員詳細</title>
+      <title>インタレスト - 社員詳細</title>
 
       <Paper sx={{ p: 2 }}>
         <Box
