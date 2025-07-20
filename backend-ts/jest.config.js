@@ -7,3 +7,8 @@ export const testEnvironment = "node";
 export const transform = {
   ...tsJestTransformCfg,
 };
+
+export const testPathIgnorePatterns = [
+  "<rootDir>/node_modules/",
+  "<rootDir>/out/",
+];
