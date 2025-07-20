@@ -6,12 +6,13 @@ import { useState } from "react";
 export function FavoriteButton() {
   const [favorite, setFavorite] = useState(false);
 
-  const toggleFavorite = () => {
+  const toggleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setFavorite(!favorite);
   };
 
   return (
-    <Tooltip title={favorite ? "スター登録" : "スター解除"}>
+    <Tooltip title={favorite ? "スター解除" : "スター登録"}>
       <IconButton
         onClick={toggleFavorite}
         aria-label="favorite"
