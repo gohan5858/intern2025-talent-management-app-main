@@ -108,16 +108,18 @@ export function SearchEmployees() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        <EmployeeListContainer
-          key="employeesContainer"
-          filterText={searchKeyword}
-          affiliationFilter={affiliationFilter}
-          positionFilter={positionFilter}
-          sortMethod={sortMethod}
-          viewMode={viewMode}
-          pageNo={pageNo}
-          onTotalPagesChange={setTotalPages}
-        />
+        <Box sx={{ minHeight: "420px" }}>
+          <EmployeeListContainer
+            key="employeesContainer"
+            filterText={searchKeyword}
+            affiliationFilter={affiliationFilter}
+            positionFilter={positionFilter}
+            sortMethod={sortMethod}
+            viewMode={viewMode}
+            pageNo={pageNo}
+            onTotalPagesChange={setTotalPages}
+          />
+        </Box>
 
         <Box
           sx={{

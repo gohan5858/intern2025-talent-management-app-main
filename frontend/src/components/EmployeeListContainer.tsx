@@ -4,8 +4,9 @@ import useSWR from "swr";
 import * as t from "io-ts";
 import { isLeft } from "fp-ts/Either";
 import { EmployeeListItem } from "./EmployeeListItem";
-import { Employee, EmployeeT } from "../models/Employee";
+import { EmployeeT } from "../models/Employee";
 import { Grid } from "@mui/material";
+import { EmployeeApiResponse } from "@/types/EmployeeApiResponse";
 
 export type SortMethod =
   | "default"
@@ -26,37 +27,20 @@ export type EmployeesContainerProps = {
 
 const EmployeesT = t.array(EmployeeT);
 
-const employeesFetcher = async (url: string): Promise<Employee[]> => {
+const employeesFetcher = async (url: string): Promise<EmployeeApiResponse> => {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch employees at ${url}`);
   }
   const body = await response.json();
-  const decoded = EmployeesT.decode(body);
+  const decoded = EmployeesT.decode(body.employees);
   if (isLeft(decoded)) {
     throw new Error(`Failed to decode employees ${JSON.stringify(body)}`);
   }
-  return decoded.right;
-};
-
-const sortEmployees = (
-  sortMethod: SortMethod,
-  data: Employee[]
-): Employee[] => {
-  switch (sortMethod) {
-    case "default":
-      return data;
-    case "age-asc":
-      return [...data].sort((a, b) => a.age - b.age);
-    case "age-dsc":
-      return [...data].sort((a, b) => b.age - a.age);
-    case "name-asc":
-      return [...data].sort((a, b) => a.name.localeCompare(b.name));
-    case "name-desc":
-      return [...data].sort((a, b) => b.name.localeCompare(a.name));
-    default:
-      return data;
-  }
+  return {
+    employees: decoded.right,
+    totalPages: body.totalPages,
+  };
 };
 
 export function EmployeeListContainer({
@@ -69,13 +53,10 @@ export function EmployeeListContainer({
   onTotalPagesChange,
 }: EmployeesContainerProps) {
   const encodedFilterText = encodeURIComponent(filterText);
-  const { data, error, isLoading } = useSWR<Employee[], Error>(
-    `/api/employees?filterText=${encodedFilterText}&affiliation=${affiliationFilter}&position=${positionFilter}`,
+  const { data, error, isLoading } = useSWR<EmployeeApiResponse, Error>(
+    `/api/employees?filterText=${encodedFilterText}&affiliation=${affiliationFilter}&position=${positionFilter}&viewMode=${viewMode}&sortMethod=${sortMethod}&pageNo=${pageNo}`,
     employeesFetcher
   );
-
-  const pageRow = 5;
-  const totalPages = data ? Math.ceil(data.length / pageRow) : 0;
 
   useEffect(() => {
     if (error != null) {
@@ -83,14 +64,17 @@ export function EmployeeListContainer({
     }
   }, [error, filterText]);
 
+  const employees = data?.employees ?? [];
+  const totalPages = data?.totalPages ?? 1;
+
   useEffect(() => {
     onTotalPagesChange(totalPages);
   }, [totalPages, onTotalPagesChange]);
 
-  if (data != null && viewMode === "card") {
+  if (employees != null && viewMode === "card") {
     return (
       <Grid container spacing={2}>
-        {data.map((employee) => (
+        {employees.map((employee) => (
           <Grid key={employee.id} size={{ xs: 12, sm: 6, md: 4 }}>
             <EmployeeListItem employee={employee} viewMode={viewMode} />
           </Grid>
@@ -100,16 +84,7 @@ export function EmployeeListContainer({
   }
 
   if (data != null) {
-    const sortedData = sortEmployees(sortMethod, data);
-    const sortedDataLength = sortedData.length;
-    const startIndex = (pageNo - 1) * pageRow;
-    const endIndex =
-      startIndex + pageRow > sortedDataLength
-        ? sortedDataLength
-        : startIndex + pageRow;
-    const paginatedData = sortedData.slice(startIndex, endIndex);
-
-    return paginatedData.map((employee) => (
+    return employees.map((employee) => (
       <EmployeeListItem
         employee={employee}
         key={employee.id}
