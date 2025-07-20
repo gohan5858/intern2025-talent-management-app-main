@@ -21,9 +21,9 @@ export interface EmployeeDetailsContainerProps {
   id: string;
 }
 
-
-export function EmployeeDetailsContainer({id}: EmployeeDetailsContainerProps) {
-
+export function EmployeeDetailsContainer({
+  id,
+}: EmployeeDetailsContainerProps) {
   const { data, error, isLoading } = useSWR<Employee, Error>(
     `/api/employees/${id}`,
     employeeFetcher

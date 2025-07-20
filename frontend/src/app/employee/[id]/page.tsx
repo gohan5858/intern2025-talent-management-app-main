@@ -3,8 +3,7 @@ import { EmployeeDetailsContainer } from "@/components/EmployeeDetailsContainer"
 import { GlobalContainer } from "@/components/GlobalContainer";
 import { Suspense } from "react";
 
-
-export default function EmployeePage({params}: {params: {id: string}}) {
+export default function EmployeePage({ params }: { params: { id: string } }) {
   return (
     <GlobalContainer pageName={"社員詳細"}>
       {/* Mark EmployeeDetailsContainer as CSR */}
