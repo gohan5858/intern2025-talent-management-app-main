@@ -1,4 +1,4 @@
-import { DynamoDBClient, GetItemCommand, GetItemCommandInput, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand, GetItemCommandInput, PutItemCommand, PutItemCommandInput, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
 import { isLeft } from "fp-ts/Either";
 import { EmployeeDatabase } from "./EmployeeDatabase";
 import { Employee, EmployeeT } from "./Employee";
@@ -67,6 +67,51 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
                     return [decoded.right];
                 }
             });
+    }
+
+    private async getMaxId(): Promise<number> {
+        const input: ScanCommandInput = {
+            TableName: this.tableName,
+            ProjectionExpression: "id",
+        };
+        const output = await this.client.send(new ScanCommand(input));
+        const items = output.Items;
+        if (items == null || items.length === 0) {
+            return 0;
+        }
+
+       	const maxId = Math.max(...items.filter((item): item is { id: { S: string } }  => item["id"].S != null).map(item => parseInt(item["id"].S, 10)))
+
+      	return maxId;
+		}
+
+    async saveEmployee(employee: Employee): Promise<Employee> {
+				if (!employee.id) {
+						const maxId = await this.getMaxId();
+						employee.id = (maxId + 1).toString();
+				}
+        const input: PutItemCommandInput = {
+						TableName: this.tableName,
+						Item: {
+								id: { S: employee.id },
+								name: { S: employee.name },
+								age: { N: employee.age.toString() },
+								affiliation: { S: employee.affiliation },
+								position: { S: employee.position },
+						},
+				}
+
+        await this.client.send(new PutItemCommand(input));
+        const savedEmployee = await this.getEmployee(employee.id);
+				
+        if (savedEmployee == undefined) {
+            throw new Error(`Failed to save employee ${employee.id}`);
+        }
+        const decoded = EmployeeT.decode(savedEmployee);
+        if (isLeft(decoded)) {
+            throw new Error(`Saved employee ${employee.id} is missing some fields. ${JSON.stringify(savedEmployee)}`);
+        }
+        return employee;
     }
 }
 

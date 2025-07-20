@@ -1,5 +1,5 @@
 import { EmployeeDatabase } from "./EmployeeDatabase";
-import { Employee } from "./Employee";
+import { Employee, EmployeeRegister } from "./Employee";
 
 export class EmployeeDatabaseInMemory implements EmployeeDatabase {
     private employees: Map<string, Employee>
@@ -36,5 +36,21 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
         }
 
         return employees;
+    }
+
+    private async getMaxId(): Promise<number> {
+        if (this.employees.size === 0) {
+            return 0;
+        }
+        const maxID = Array.from(this.employees.keys()).map(id => parseInt(id)).reduce((max, id) => max > id ? max : id, 0);
+
+        return maxID;
+    }
+
+    async saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee> {
+        const id = (await this.getMaxId() + 1).toString();
+        const employee = { id,  ...employeeRegister };
+        this.employees.set(employee.id, employee);
+        return employee;
     }
 }
