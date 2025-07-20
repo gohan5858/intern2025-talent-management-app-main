@@ -1,6 +1,7 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import Link from "next/link";
+import DarkModeBar from "./DarkModeBar";
 
 export interface GlobalHeaderProps {
   title: string;
@@ -25,6 +26,9 @@ export function GlobalHeader({ title }: GlobalHeaderProps) {
               {title}
             </Typography>
           </Link>
+
+          <Box sx={{ flexGrow: 1 }} />
+          <DarkModeBar />
         </Toolbar>
       </AppBar>
     </Box>
