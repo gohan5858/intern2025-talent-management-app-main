@@ -20,6 +20,8 @@ export type EmployeesContainerProps = {
   positionFilter: string;
   sortMethod: SortMethod;
   viewMode: "list" | "card";
+  pageNo: number;
+  onTotalPagesChange: (totalPages: number) => void;
 };
 
 const EmployeesT = t.array(EmployeeT);
@@ -63,17 +65,27 @@ export function EmployeeListContainer({
   positionFilter,
   sortMethod,
   viewMode,
+  pageNo,
+  onTotalPagesChange,
 }: EmployeesContainerProps) {
   const encodedFilterText = encodeURIComponent(filterText);
   const { data, error, isLoading } = useSWR<Employee[], Error>(
     `/api/employees?filterText=${encodedFilterText}&affiliation=${affiliationFilter}&position=${positionFilter}`,
     employeesFetcher
   );
+
+  const pageRow = 5;
+  const totalPages = data ? Math.ceil(data.length / pageRow) : 0;
+
   useEffect(() => {
     if (error != null) {
       console.error(`Failed to fetch employees filtered by filterText`, error);
     }
   }, [error, filterText]);
+
+  useEffect(() => {
+    onTotalPagesChange(totalPages);
+  }, [totalPages, onTotalPagesChange]);
 
   if (data != null && viewMode === "card") {
     return (
@@ -89,7 +101,15 @@ export function EmployeeListContainer({
 
   if (data != null) {
     const sortedData = sortEmployees(sortMethod, data);
-    return sortedData.map((employee) => (
+    const sortedDataLength = sortedData.length;
+    const startIndex = (pageNo - 1) * pageRow;
+    const endIndex =
+      startIndex + pageRow > sortedDataLength
+        ? sortedDataLength
+        : startIndex + pageRow;
+    const paginatedData = sortedData.slice(startIndex, endIndex);
+
+    return paginatedData.map((employee) => (
       <EmployeeListItem
         employee={employee}
         key={employee.id}

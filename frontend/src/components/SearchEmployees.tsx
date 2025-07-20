@@ -2,10 +2,12 @@
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import {
+  Box,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
+  Pagination,
   Paper,
   Select,
   SelectChangeEvent,
@@ -13,7 +15,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { EmployeeListContainer, SortMethod } from "./EmployeeListContainer";
 
 export function SearchEmployees() {
@@ -21,6 +23,8 @@ export function SearchEmployees() {
   const [affiliationFilter, setAffiliationFilter] = useState("");
   const [positionFilter, setPositionFilter] = useState("");
   const [sortMethod, setSortMethod] = useState<SortMethod>("default");
+  const [pageNo, setPageNo] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleSortMethodSelected = (event: SelectChangeEvent) => {
     setSortMethod(event.target.value as SortMethod);
@@ -111,7 +115,26 @@ export function SearchEmployees() {
           positionFilter={positionFilter}
           sortMethod={sortMethod}
           viewMode={viewMode}
+          pageNo={pageNo}
+          onTotalPagesChange={setTotalPages}
         />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          <Pagination
+            count={totalPages}
+            page={pageNo}
+            onChange={(_: React.ChangeEvent<unknown>, newPageNo: number) =>
+              setPageNo(newPageNo)
+            }
+          />
+        </Box>
       </Paper>
     </>
   );
