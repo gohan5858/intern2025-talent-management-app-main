@@ -1,6 +1,6 @@
 import { EmployeeApiResponse } from "../types/EmployeeApiResponse";
 import { SortMethod } from "../types/SortMethod";
-import { Employee } from "./Employee";
+import { Employee, EmployeeRegister } from "./Employee";
 
 export interface EmployeeDatabase {
   getEmployee(id: string): Promise<Employee | undefined>;
@@ -12,4 +12,5 @@ export interface EmployeeDatabase {
     sortMethod: SortMethod,
     pageNo: number
   ): Promise<EmployeeApiResponse>;
+  saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee>;
 }

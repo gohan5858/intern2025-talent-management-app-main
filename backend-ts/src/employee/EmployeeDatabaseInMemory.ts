@@ -1,5 +1,5 @@
 import { EmployeeDatabase } from "./EmployeeDatabase";
-import { Employee } from "./Employee";
+import { Employee, EmployeeRegister } from "./Employee";
 import { SortMethod } from "../types/SortMethod";
 import { EmployeeApiResponse } from "../types/EmployeeApiResponse";
 import { pageRow } from "../types/PageNo";
@@ -15,6 +15,7 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       age: 22,
       affiliation: "人事",
       position: "主任",
+      skills: [],
     });
     this.employees.set("2", {
       id: "2",
@@ -22,69 +23,30 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       age: 28,
       affiliation: "人事",
       position: "部長",
+      skills: [],
     });
     this.employees.set("3", {
       id: "3",
-      name: "山田 太郎1",
-      age: 117,
+      name: "山田 太郎",
+      age: 27,
       affiliation: "開発",
       position: "一般",
-    });
-    this.employees.set("4", {
-      id: "4",
-      name: "山田 太郎2",
-      age: 107,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("5", {
-      id: "5",
-      name: "山田 太郎3",
-      age: 97,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("6", {
-      id: "6",
-      name: "山田 太郎4",
-      age: 87,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("7", {
-      id: "7",
-      name: "山田 太郎5",
-      age: 77,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("8", {
-      id: "8",
-      name: "山田 太郎6",
-      age: 67,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("9", {
-      id: "9",
-      name: "山田 太郎7",
-      age: 57,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("10", {
-      id: "10",
-      name: "山田 太郎8",
-      age: 47,
-      affiliation: "開発",
-      position: "一般",
-    });
-    this.employees.set("11", {
-      id: "11",
-      name: "山田 太郎9",
-      age: 37,
-      affiliation: "開発",
-      position: "一般",
+      skills: [
+        { name: "TypeScript", level: 3, detail: "(スキルの説明)", tags: [] },
+        {
+          name: "React",
+          level: 2,
+          detail: "(スキルの説明)",
+          tags: ["Redux", "MUI"],
+        },
+        {
+          name: "Next.js",
+          level: 1,
+          detail:
+            "(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)",
+          tags: ["App Router"],
+        },
+      ],
     });
   }
 
@@ -149,5 +111,27 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       employees: paginatedEmployees,
       totalPages: totalPages,
     };
+  }
+
+  private async getMaxId(): Promise<number> {
+    if (this.employees.size === 0) {
+      return 0;
+    }
+    const maxID = Array.from(this.employees.keys())
+      .map((id) => parseInt(id))
+      .reduce((max, id) => (max > id ? max : id), 0);
+
+    return maxID;
+  }
+
+  async saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee> {
+    const id = ((await this.getMaxId()) + 1).toString();
+    const employee: Employee = {
+      id,
+      ...employeeRegister,
+      skills: employeeRegister.skills ?? [],
+    };
+    this.employees.set(employee.id, employee);
+    return employee;
   }
 }

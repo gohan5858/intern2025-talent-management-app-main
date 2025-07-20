@@ -51,23 +51,17 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
   async getEmployees(
     filterText: string,
     affiliation: string,
-    position: string,
-    viewMode: string,
-    sortMethod: SortMethod,
-    pageNo: number
-  ): Promise<EmployeeApiResponse> {
+    position: string
+  ): Promise<Employee[]> {
     const input: ScanCommandInput = {
       TableName: this.tableName,
     };
     const output = await this.client.send(new ScanCommand(input));
     const items = output.Items;
     if (items == null) {
-      return {
-        employees: [],
-        totalPages: 0,
-      };
+      return [];
     }
-    const employees = items
+    return items
       .filter((item) => filterText === "" || item["name"].S === filterText)
       .filter(
         (item) => affiliation === "" || item["affiliation"].S === affiliation
@@ -91,12 +85,6 @@ export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
           return [decoded.right];
         }
       });
-
-    const totalPages = Math.ceil(employees.length / pageRow(viewMode));
-    return {
-      employees: employees,
-      totalPages: totalPages,
-    };
   }
 }
 
