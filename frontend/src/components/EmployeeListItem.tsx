@@ -1,13 +1,6 @@
 import PersonIcon from "@mui/icons-material/Person";
 
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Card, CardContent, Chip } from "@mui/material";
 import Link from "next/link";
 import { Employee } from "../models/Employee";
 
