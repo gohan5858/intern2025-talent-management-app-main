@@ -16,6 +16,7 @@ describe.each([["list" as ViewModeType], ["card" as ViewModeType]])(
         age: 27,
         affiliation: "開発",
         position: "一般",
+        skills: [],
       } as Employee;
 
       render(<EmployeeListItem employee={employee} viewMode={viewMode} />);

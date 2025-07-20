@@ -12,6 +12,7 @@ describe("EmployeeDetails", () => {
       age: 27,
       affiliation: "開発",
       position: "一般",
+      skills: [],
     } as Employee;
 
     render(<EmployeeDetails employee={employee} />);
