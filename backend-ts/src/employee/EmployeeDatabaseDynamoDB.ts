@@ -8,8 +8,8 @@ import {
   ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
 import { isLeft } from "fp-ts/Either";
-import { EmployeeDatabase } from "./EmployeeDatabase";
 import { Employee, EmployeeT } from "./Employee";
+import { EmployeeDatabase } from "./EmployeeDatabase";
 
 export class EmployeeDatabaseDynamoDB implements EmployeeDatabase {
   private client: DynamoDBClient;

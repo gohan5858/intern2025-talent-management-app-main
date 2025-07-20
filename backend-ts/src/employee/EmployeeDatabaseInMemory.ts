@@ -1,5 +1,8 @@
 import { EmployeeDatabase } from "./EmployeeDatabase";
 import { Employee, EmployeeRegister } from "./Employee";
+import { SortMethod } from "../types/SortMethod";
+import { EmployeeApiResponse } from "../types/EmployeeApiResponse";
+import { pageRow } from "../types/PageNo";
 
 export class EmployeeDatabaseInMemory implements EmployeeDatabase {
   private employees: Map<string, Employee>;
@@ -54,8 +57,11 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
   async getEmployees(
     filterText: string,
     affiliation: string,
-    position: string
-  ): Promise<Employee[]> {
+    position: string,
+    viewMode: string,
+    sortMethod: SortMethod,
+    pageNo: number
+  ): Promise<EmployeeApiResponse> {
     let employees = Array.from(this.employees.values());
 
     if (filterText !== "") {
@@ -76,7 +82,35 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       );
     }
 
-    return employees;
+    switch (sortMethod) {
+      case "age-asc":
+        employees.sort((a, b) => a.age - b.age);
+        break;
+      case "age-dsc":
+        employees.sort((a, b) => b.age - a.age);
+        break;
+      case "name-asc":
+        employees.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-desc":
+        employees.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    const sortedDataLength = employees.length;
+    const row = pageRow(viewMode);
+    const startIndex = (pageNo - 1) * row;
+    const endIndex =
+      startIndex + row > sortedDataLength ? sortedDataLength : startIndex + row;
+    const paginatedEmployees = employees.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(employees.length / row);
+    return {
+      employees: paginatedEmployees,
+      totalPages: totalPages,
+    };
   }
 
   private async getMaxId(): Promise<number> {
@@ -92,7 +126,11 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
 
   async saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee> {
     const id = ((await this.getMaxId()) + 1).toString();
-    const employee = { id, ...employeeRegister };
+    const employee: Employee = {
+      id,
+      ...employeeRegister,
+      skills: employeeRegister.skills ?? [],
+    };
     this.employees.set(employee.id, employee);
     return employee;
   }

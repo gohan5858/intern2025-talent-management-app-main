@@ -1,3 +1,5 @@
+import { EmployeeApiResponse } from "../types/EmployeeApiResponse";
+import { SortMethod } from "../types/SortMethod";
 import { Employee, EmployeeRegister } from "./Employee";
 
 export interface EmployeeDatabase {
@@ -5,7 +7,10 @@ export interface EmployeeDatabase {
   getEmployees(
     filterText: string,
     affiliation: string,
-    position: string
-  ): Promise<Employee[]>;
+    position: string,
+    viewMode: string,
+    sortMethod: SortMethod,
+    pageNo: number
+  ): Promise<EmployeeApiResponse>;
   saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee>;
 }
