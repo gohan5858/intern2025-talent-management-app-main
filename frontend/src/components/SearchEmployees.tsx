@@ -2,6 +2,7 @@
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import {
+  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -48,6 +49,12 @@ export function SearchEmployees() {
           p: 2,
         }}
       >
+       <Button
+        href="/employee/register"
+        style={{ textDecoration: "none" }}
+       >
+        新規作成
+       </Button>
         <TextField
           placeholder="検索キーワードを入力してください"
           value={searchKeyword}
