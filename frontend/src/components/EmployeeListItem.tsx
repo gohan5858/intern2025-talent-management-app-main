@@ -21,10 +21,7 @@ export function EmployeeListItem({
   viewMode,
 }: EmployeeListItemProps) {
   return (
-    <Link
-      href={`/employee?id=${employee.id}`}
-      style={{ textDecoration: "none" }}
-    >
+    <Link href={`/employee/${employee.id}`} style={{ textDecoration: "none" }}>
       <Card
         sx={{
           transition: "background-color 0.2s",

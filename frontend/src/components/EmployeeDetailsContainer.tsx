@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import useSWR from "swr";
 import { isLeft } from "fp-ts/Either";
 import { Employee, EmployeeT } from "../models/Employee";
-import { useSearchParams } from "next/navigation";
 import { EmployeeDetails } from "./EmployeeDetails";
 
 const employeeFetcher = async (url: string): Promise<Employee> => {
@@ -18,10 +17,13 @@ const employeeFetcher = async (url: string): Promise<Employee> => {
   }
   return decoded.right;
 };
+export interface EmployeeDetailsContainerProps {
+  id: string;
+}
 
-export function EmployeeDetailsContainer() {
-  const id = useSearchParams().get("id");
-
+export function EmployeeDetailsContainer({
+  id,
+}: EmployeeDetailsContainerProps) {
   const { data, error, isLoading } = useSWR<Employee, Error>(
     `/api/employees/${id}`,
     employeeFetcher
