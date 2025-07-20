@@ -3,13 +3,12 @@ import { Paper, Button, TextField } from "@mui/material";
 import { EmployeeRegisterContainerProps } from "./EmployeeRegisterContainer";
 import { EmployeeRegister } from "@/models/Employee";
 
-
 interface EmployeeRegisterProps {
-  onSubmit: (props: EmployeeRegisterContainerProps) => Promise<void>
+  onSubmit: (props: EmployeeRegisterContainerProps) => Promise<void>;
 }
 
-export function EmployeeRegisterItem({onSubmit}:EmployeeRegisterProps) {
-   const [nameValue, setNameValue] = useState("");
+export function EmployeeRegisterItem({ onSubmit }: EmployeeRegisterProps) {
+  const [nameValue, setNameValue] = useState("");
   const [ageValue, setAgeValue] = useState(0);
   const [affiliationValue, setAffiliationValue] = useState("");
   const [positionValue, setPositionValue] = useState("");
@@ -28,12 +27,12 @@ export function EmployeeRegisterItem({onSubmit}:EmployeeRegisterProps) {
     };
 
     onSubmit({
-      employeeRegister: employeeDataToRegister
+      employeeRegister: employeeDataToRegister,
     });
   };
 
   return (
-    <Paper sx={{ p: 4, mx: 'auto', mt: 4 }}>
+    <Paper sx={{ p: 4, mx: "auto", mt: 4 }}>
       <h2>社員登録</h2>
       <TextField
         fullWidth
@@ -86,5 +85,5 @@ export function EmployeeRegisterItem({onSubmit}:EmployeeRegisterProps) {
         登録
       </Button>
     </Paper>
-  )
+  );
 }

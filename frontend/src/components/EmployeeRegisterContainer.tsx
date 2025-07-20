@@ -1,11 +1,15 @@
-"use client"
-import { EmployeeRegister, EmployeeRegisterT, EmployeeT } from "@/models/Employee";
+"use client";
+import {
+  EmployeeRegister,
+  EmployeeRegisterT,
+  EmployeeT,
+} from "@/models/Employee";
 import { isLeft } from "fp-ts/Either";
 import { EmployeeRegisterItem } from "./EmployeeRegisterItem";
 import { Box } from "@mui/material";
 
 export interface EmployeeRegisterContainerProps {
-  employeeRegister: EmployeeRegister
+  employeeRegister: EmployeeRegister;
 }
 
 async function calculateSha256HashBrowser(data: string): Promise<string> {
@@ -24,10 +28,14 @@ async function calculateSha256HashBrowser(data: string): Promise<string> {
   return hexHash;
 }
 
-const employeeRegisterFetcher = async (props: EmployeeRegisterContainerProps): Promise<void> => {
+const employeeRegisterFetcher = async (
+  props: EmployeeRegisterContainerProps
+): Promise<void> => {
   const result = EmployeeRegisterT.decode(props.employeeRegister);
   if (isLeft(result)) {
-    throw new Error(`Failed to decode employee register ${JSON.stringify(props)}`);
+    throw new Error(
+      `Failed to decode employee register ${JSON.stringify(props)}`
+    );
   }
   const reqBody = JSON.stringify(result.right);
   const hashedBody = await calculateSha256HashBrowser(reqBody);
@@ -48,17 +56,18 @@ const employeeRegisterFetcher = async (props: EmployeeRegisterContainerProps): P
   const body = await response.json();
   const decoded = EmployeeT.decode(body);
   if (isLeft(decoded)) {
-    throw new Error(`Failed to decode registered employee ${JSON.stringify(body)}`);
+    throw new Error(
+      `Failed to decode registered employee ${JSON.stringify(body)}`
+    );
   }
   alert("登録が完了しました");
-  window.location.href = `/`
-}
+  window.location.href = `/`;
+};
 
 export function EmployeeRegisterContainer() {
-
   return (
     <Box>
-      <EmployeeRegisterItem onSubmit={employeeRegisterFetcher}/>
+      <EmployeeRegisterItem onSubmit={employeeRegisterFetcher} />
     </Box>
-  )
+  );
 }
