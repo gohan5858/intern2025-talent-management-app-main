@@ -9,7 +9,7 @@ export default async function EmployeePage({
   params: Promise<{ id: string }>; // 非同期で取得する
 }) {
   const { id } = await params;
-  
+
   return (
     <GlobalContainer pageName={"社員詳細"}>
       {/* Mark EmployeeDetailsContainer as CSR */}
