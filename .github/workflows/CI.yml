@@ -1,0 +1,29 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "23"
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+      - name: Run linter
+        working-directory: frontend
+        run: npm run lint
+      - name: Run formatter
+        working-directory: frontend
+        run: npm run format:check
+      - name: Run tests
+        working-directory: frontend
+        run: npm test
+      - name: Run build
+        working-directory: frontend
+        run: npm run build

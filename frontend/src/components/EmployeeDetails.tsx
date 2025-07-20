@@ -45,45 +45,51 @@ export function EmployeeDetails(prop: EmployeeDetailsProps) {
   );
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Box
-        display={"flex"}
-        flexDirection="column"
-        alignItems="flex-start"
-        gap={1}
-      >
+    <>
+      <title>タレントマネジメントシステム - 社員詳細</title>
+
+      <Paper sx={{ p: 2 }}>
         <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          p={2}
-          gap={2}
+          display={"flex"}
+          flexDirection="column"
+          alignItems="flex-start"
+          gap={1}
         >
-          <Avatar sx={{ width: 128, height: 128 }}>
-            <PersonIcon sx={{ fontSize: 128 }} />
-          </Avatar>
-          <Typography variant="h5">{employee.name}</Typography>
-        </Box>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
-          <Tabs value={selectedTabValue} onChange={handleTabValueChange}>
-            <Tab label={tabPanelValue.basicInfo} value={"basicInfo"} />
-            <Tab label={tabPanelValue.others} value={"others"} />
-          </Tabs>
-        </Box>
-
-        <TabContent value={"basicInfo"} selectedValue={selectedTabValue}>
-          <Box p={2} display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h6">基本情報</Typography>
-            <Typography>年齢：{employee.age}歳</Typography>
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            p={2}
+            gap={2}
+          >
+            <Avatar sx={{ width: 128, height: 128 }}>
+              <PersonIcon sx={{ fontSize: 128 }} />
+            </Avatar>
+            <Typography variant="h5">{employee.name}</Typography>
           </Box>
-        </TabContent>
-
-        <TabContent value={"others"} selectedValue={selectedTabValue}>
-          <Box p={2} display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h6">その他</Typography>
+          <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
+            <Tabs value={selectedTabValue} onChange={handleTabValueChange}>
+              <Tab label={tabPanelValue.basicInfo} value={"basicInfo"} />
+              <Tab label={tabPanelValue.others} value={"others"} />
+            </Tabs>
           </Box>
-        </TabContent>
-      </Box>
-    </Paper>
+
+          <TabContent value={"basicInfo"} selectedValue={selectedTabValue}>
+            <Box p={2} display="flex" flexDirection="column" gap={1}>
+              <Typography variant="h6">基本情報</Typography>
+              <Typography>年齢：{employee.age}歳</Typography>
+              <Typography>所属：{employee.affiliation}</Typography>
+              <Typography>役職：{employee.position}</Typography>
+            </Box>
+          </TabContent>
+
+          <TabContent value={"others"} selectedValue={selectedTabValue}>
+            <Box p={2} display="flex" flexDirection="column" gap={1}>
+              <Typography variant="h6">その他</Typography>
+            </Box>
+          </TabContent>
+        </Box>
+      </Paper>
+    </>
   );
 }
