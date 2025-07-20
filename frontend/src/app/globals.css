@@ -27,3 +27,15 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.Mode.dark {
+  background-color: #3a383b;
+  color: #e1e1e1;
+  transition: all 0.5s;
+}
+
+.Mode.light {
+  background-color: #f8f3ef;
+  color: #353535;
+  transition: all 0.5s;
+}
