@@ -40,7 +40,7 @@ describe.each([["list" as ViewModeType], ["card" as ViewModeType]])(
       expect(linkElement).toBeVisible();
 
       const url = linkElement.getAttribute("href");
-      expect(url).toBe("/employee?id=3");
+      expect(url).toBe("/employee/3");
     });
   }
 );
