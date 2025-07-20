@@ -1,6 +1,13 @@
 import PersonIcon from "@mui/icons-material/Person";
 
-import { Avatar, Box, Card, CardContent, Chip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { Employee } from "../models/Employee";
 
@@ -36,11 +43,24 @@ export function EmployeeListItem({
             <Avatar sx={{ width: 48, height: 48 }}>
               <PersonIcon sx={{ fontSize: 48 }} />
             </Avatar>
-            <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
-              <Chip label={employee.affiliation} variant="outlined" />
-              <Chip label={employee.position} variant="outlined" />
-              <Chip label={employee.name} variant="outlined" />
-              <Chip label={`${employee.age}歳`} variant="outlined" />
+            <Box
+              display="flex"
+              flexDirection="column"
+              gap={1}
+              alignItems={viewMode === "card" ? "center" : "flex-start"}
+            >
+              <Typography>{employee.name}</Typography>
+              <Box
+                display="flex"
+                flexDirection="row"
+                gap={1}
+                flexWrap="wrap"
+                alignItems="center"
+              >
+                <Chip label={employee.affiliation} variant="outlined" />
+                <Chip label={employee.position} variant="outlined" />
+                <Chip label={`${employee.age}歳`} variant="outlined" />
+              </Box>
             </Box>
           </Box>
         </CardContent>
