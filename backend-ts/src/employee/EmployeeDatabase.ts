@@ -1,4 +1,4 @@
-import { Employee } from "./Employee";
+import { Employee, EmployeeRegister } from "./Employee";
 
 export interface EmployeeDatabase {
   getEmployee(id: string): Promise<Employee | undefined>;
@@ -7,4 +7,5 @@ export interface EmployeeDatabase {
     affiliation: string,
     position: string
   ): Promise<Employee[]>;
+  saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee>;
 }

@@ -3,9 +3,11 @@ import type {
   LambdaFunctionURLResult,
 } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { Employee } from "./employee/Employee";
+import { Employee, EmployeeRegister } from "./employee/Employee";
 import { EmployeeDatabaseDynamoDB } from "./employee/EmployeeDatabaseDynamoDB";
 import { EmployeeDatabase } from "./employee/EmployeeDatabase";
+import { EmployeeRegisterT } from "./employee/Employee";
+import { isLeft } from "fp-ts/Either";
 
 const getEmployeeHandler = async (
   database: EmployeeDatabase,
@@ -39,6 +41,34 @@ const getEmployeesHandler = async (
   };
 };
 
+const postEmployeeRegisterHandler = async (
+  database: EmployeeDatabase,
+  employee: EmployeeRegister
+): Promise<LambdaFunctionURLResult> => {
+  const decoded = EmployeeRegisterT.decode(employee);
+  if (isLeft(decoded)) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: `Invalid employee register data: ${JSON.stringify(employee)}`,
+      }),
+    };
+  }
+  try {
+    const result = await database.saveEmployee(decoded.right);
+    return {
+      statusCode: 201,
+      body: JSON.stringify(result),
+    };
+  } catch (e) {
+    console.error("Failed to register the employee.", e);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Internal Server Error" }),
+    };
+  }
+};
+
 export const handle = async (
   event: LambdaFunctionURLEvent
 ): Promise<LambdaFunctionURLResult> => {
@@ -62,6 +92,9 @@ export const handle = async (
         query?.affiliation ?? "",
         query?.position ?? ""
       );
+    } else if (path === "/api/employees/register") {
+      const body = JSON.parse(event.body ?? "{}");
+      return postEmployeeRegisterHandler(database, body);
     } else if (path.startsWith("/api/employees/")) {
       const id = path.substring("/api/employees/".length);
       return getEmployeeHandler(database, id);

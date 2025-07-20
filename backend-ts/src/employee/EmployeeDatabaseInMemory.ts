@@ -1,5 +1,5 @@
 import { EmployeeDatabase } from "./EmployeeDatabase";
-import { Employee } from "./Employee";
+import { Employee, EmployeeRegister } from "./Employee";
 
 export class EmployeeDatabaseInMemory implements EmployeeDatabase {
   private employees: Map<string, Employee>;
@@ -12,6 +12,7 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       age: 22,
       affiliation: "人事",
       position: "主任",
+      skills: [],
     });
     this.employees.set("2", {
       id: "2",
@@ -19,6 +20,7 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       age: 28,
       affiliation: "人事",
       position: "部長",
+      skills: [],
     });
     this.employees.set("3", {
       id: "3",
@@ -26,6 +28,22 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
       age: 27,
       affiliation: "開発",
       position: "一般",
+      skills: [
+        { name: "TypeScript", level: 3, detail: "(スキルの説明)", tags: [] },
+        {
+          name: "React",
+          level: 2,
+          detail: "(スキルの説明)",
+          tags: ["Redux", "MUI"],
+        },
+        {
+          name: "Next.js",
+          level: 1,
+          detail:
+            "(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)",
+          tags: ["App Router"],
+        },
+      ],
     });
   }
 
@@ -59,5 +77,23 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
     }
 
     return employees;
+  }
+
+  private async getMaxId(): Promise<number> {
+    if (this.employees.size === 0) {
+      return 0;
+    }
+    const maxID = Array.from(this.employees.keys())
+      .map((id) => parseInt(id))
+      .reduce((max, id) => (max > id ? max : id), 0);
+
+    return maxID;
+  }
+
+  async saveEmployee(employeeRegister: EmployeeRegister): Promise<Employee> {
+    const id = ((await this.getMaxId()) + 1).toString();
+    const employee = { id, ...employeeRegister };
+    this.employees.set(employee.id, employee);
+    return employee;
   }
 }
