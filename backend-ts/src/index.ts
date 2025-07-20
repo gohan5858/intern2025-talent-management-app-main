@@ -76,11 +76,9 @@ app.post(
   async (req: Request, res: Response) => {
     const employeeRegister = EmployeeRegisterT.decode(req.body);
     if (isLeft(employeeRegister)) {
-      res
-        .status(400)
-        .send({
-          message: `Invalid employee register data: ${JSON.stringify(req.body)}`,
-        });
+      res.status(400).send({
+        message: `Invalid employee register data: ${JSON.stringify(req.body)}`,
+      });
       return;
     }
 
@@ -100,11 +98,9 @@ app.post(
   async (req: Request, res: Response) => {
     const employeeRegister = EmployeeRegisterT.decode(req.body);
     if (isLeft(employeeRegister)) {
-      res
-        .status(400)
-        .send({
-          message: `Invalid employee register data: ${JSON.stringify(req.body)}`,
-        });
+      res.status(400).send({
+        message: `Invalid employee register data: ${JSON.stringify(req.body)}`,
+      });
       return;
     }
 
