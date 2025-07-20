@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"src/**/*.tsx\"",
+    "format": "prettier --write 'src/**/*.tsx'",
     "format:check": "prettier --check 'src/**/*.tsx'",
     "test": "jest",
     "test:coverage": "jest --coverage"
