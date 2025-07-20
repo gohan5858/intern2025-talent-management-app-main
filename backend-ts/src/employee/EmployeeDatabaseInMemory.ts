@@ -49,6 +49,77 @@ export class EmployeeDatabaseInMemory implements EmployeeDatabase {
         },
       ],
     });
+    this.employees.set("4", {
+      id: "4",
+      name: "山田 太郎2",
+      age: 27,
+      affiliation: "開発",
+      position: "一般",
+      skills: [
+        { name: "TypeScript", level: 3, detail: "(スキルの説明)", tags: [] },
+        {
+          name: "React",
+          level: 2,
+          detail: "(スキルの説明)",
+          tags: ["Redux", "MUI"],
+        },
+        {
+          name: "Next.js",
+          level: 1,
+          detail:
+            "(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)(スキルの説明)",
+          tags: ["App Router"],
+        },
+      ],
+    });
+    this.employees.set("5", {
+      id: "5",
+      name: "Jane Doe2",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
+    this.employees.set("6", {
+      id: "6",
+      name: "Jane Doe3",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
+    this.employees.set("7", {
+      id: "7",
+      name: "Jane Doe4",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
+    this.employees.set("8", {
+      id: "8",
+      name: "Jane Doe5",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
+    this.employees.set("9", {
+      id: "9",
+      name: "Jane Doe6",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
+    this.employees.set("10", {
+      id: "10",
+      name: "Jane Doe",
+      age: 22,
+      affiliation: "人事",
+      position: "主任",
+      skills: [],
+    });
   }
 
   async getEmployee(id: string): Promise<Employee | undefined> {
