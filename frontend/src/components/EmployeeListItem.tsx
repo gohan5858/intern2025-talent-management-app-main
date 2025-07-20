@@ -67,7 +67,7 @@ export function EmployeeListItem({
               mt={viewMode === "card" ? 2 : 0}
               alignSelf={viewMode === "card" ? "center" : "right"}
             >
-              <FavoriteButton />
+              <FavoriteButton employeeId={"ss"} />
             </Box>
           </Box>
         </CardContent>

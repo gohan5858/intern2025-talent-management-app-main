@@ -1,14 +1,23 @@
 import { IconButton, Tooltip } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useState } from "react";
+import { useFavoriteEmployees } from "./useFavoriteEmployees";
 
-export function FavoriteButton() {
-  const [favorite, setFavorite] = useState(false);
+type FavoriteButtonProps = {
+  employeeId: string;
+};
 
-  const toggleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setFavorite(!favorite);
+export function FavoriteButton({ employeeId }: FavoriteButtonProps) {
+  const { favorite, addFavorite, removeFavorite, isFavorite } =
+    useFavoriteEmployees();
+
+  const toggleFavorite = (e: React.MouseEvent) => {
+    if (isFavorite(employeeId)) {
+      removeFavorite(employeeId);
+    } else {
+      addFavorite(employeeId);
+    }
+    e.stopPropagation(); // 親のクリックなどを防ぐ
   };
 
   return (
