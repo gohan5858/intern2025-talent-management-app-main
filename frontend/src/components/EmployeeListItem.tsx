@@ -22,7 +22,7 @@ export function EmployeeListItem({
 }: EmployeeListItemProps) {
   return (
     <Link
-      href={`/employee?id=${employee.id}`}
+      href={`/employee/${employee.id}`}
       style={{ textDecoration: "none" }}
     >
       <Card
